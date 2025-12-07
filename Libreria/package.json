@@ -1,0 +1,23 @@
+{
+  "name": "libreria",
+  "version": "2.0.0",
+  "main": "app.mjs",
+  "type": "module",
+  "scripts": {
+    "test-model": "mocha test/model.spec.mjs --exit",
+    "test-rest": "mocha test/rest.spec.mjs --exit",
+    "start": "node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "chai": "4.3.10",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.2.0"
+  }
+}

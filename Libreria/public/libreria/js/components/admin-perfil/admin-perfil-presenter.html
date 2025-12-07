@@ -1,0 +1,41 @@
+<header>
+  <h1>Tecnologías y Sistemas Web 24/25</h1>
+  <h2>Perfil Administrador </h2>
+</header>
+<article>
+  <nav class="navbar">
+    <ul>
+      <li><a id="homeLink" href="admin-home.html">Inicio</a></li>
+      <li><a id="perfilLink" href="admin-perfil.html">Perfil</a></li>
+      <li><a id="salirLink" href="home.html">Salir</a></li>
+    </ul>
+  </nav>
+  <div class="contenido">
+    <div class="info">
+      <div class="mensajes-container" id="mensajesContainer"></div>
+      <form action="index.html" method="GET">
+        <label for="dniInput">DNI</label>
+        <input id="dniInput" name="dni" type="text" size="9" placeholder="Ingrese el DNI" required value=this.dniInput.value><br>
+        <label for="nombreInput">Nombre</label>
+        <input id="nombreInput" name="nombre" type="text" size="40" placeholder="Ingrese el nombre" required value=""><br>
+        <label for="apellidosInput">Nombre</label>
+        <input id="apellidosInput" name="apellidos" type="text" size="40" placeholder="Ingrese los apellidos" required value=""><br>
+        <label for="direccionArea">Dirección</label>
+        <textarea id="direccionArea" name="direccion" rows="8" cols="40" placeholder="Ingrese la direccion" required></textarea><br>
+        <label for="emailInput">Email</label>
+        <input id="emailInput" name="email" type="text" required value=""><br>
+        <label for="contrasenaInput">Contraseña</label>
+        <input id="contrasenaInput" name="contrasena" type="password" required value=""><br>
+        <footer>
+          <input class="guardar-input" id="guardarInput" name="guardar" type="submit" value="Guardar">
+        </footer>
+      </form>
+    </div>
+    <footer>
+      Prof. Dr. Ricardo Tesoriero Pszytula<br>
+      Tecnologías y Sistemas Web 24/25<br>
+      Universidad de Castilla-La Mancha<br>
+      <small>20 de septiembre de 2021</small>
+    </footer>
+  </div>
+</article>

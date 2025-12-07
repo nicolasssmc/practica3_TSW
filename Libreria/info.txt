@@ -1,0 +1,15 @@
+Realizado por: Nicolás Martínez, Oscar Merino, Carmen Crespo y Felipe Tévar
+
+Cuando no se puede ejecutar porque el puerto esta ocupado
+
+MAC OS:
+- Ver qué proceso ocupa el puerto 3000:
+lsof -i :3000 -n -P
+- Ver detalles del proceso (reemplaza 85384 por el PID que te salga):
+ps -p 85384 -o pid,ppid,stat,comm,args
+- Parar el proceso que ocupa el puerto 3000 (graceful):
+kill 85384
+- Si no se para con kill, fuerza:
+kill -9 85384
+- - Alternativa rápida: arrancar la app en otro puerto (temporal):
+PORT=3001 npm start

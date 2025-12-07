@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cliente Ver Compra</title>
+</head>
+<body>
+  <header>
+    <h1>Tecnologías y Sistemas Web 24/25</h1>
+    <h2>Cliente Ver Compra</h2>
+  </header>
+
+  <article class="layout-flex">
+    <nav class="navbar">
+      <ul>
+        <li><a href="cliente-home.html">Inicio</a></li>
+        <li><a href="cliente-carro.html">Carro</a></li>
+        <li><a href="cliente-compras.html">Facturas</a></li>
+        <li><a href="cliente-perfil.html">Perfil</a></li>
+        <li><a href="home.html">Salir</a></li>
+      </ul>
+    </nav>
+
+    <div class="contenido">
+      <div class="factura-container">
+        <div class="mensajes-container" id="mensajesContainer"></div>
+        <div class="factura-info">
+          <p><strong>Número:</strong> <span id="numero"></span></p>
+          <p><strong>Fecha:</strong> <span id="fecha"></span></p>
+          <p><strong>Razón Social:</strong> <span id="razonSocial"></span></p>
+          <p><strong>DNI:</strong> <span id="dni"></span></p>
+          <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+          <p><strong>Email:</strong> <span id="email"></span></p>
+        </div>
+      </div>
+      
+      <div class="container-table">
+        <table class="tabla-factura">
+          <thead>
+            <tr >
+              <th class="item-cantidad">Cant.</th>
+              <th class="item-detalle">Detalle</th>
+              <th class="item-unidad">Unidad</th>
+              <th class="item-total">Total</th>
+            </tr>
+          </thead>
+          <tbody id="detalleBody">
+          </tbody>
+        </table>
+      </div>
+      <div class="totales">
+        <p class="p1"><strong>IVA €</strong> <span id="ivaTotal">0.00</span></p>
+        <p class="p2"><strong>Total €</strong> <span id="totalFinal">0.00</span></p>
+      </div>   
+    
+      <footer>
+        Prof. Dr. Ricardo Tesoriero Pszytula<br>
+        Tecnologías y Sistemas Web 24/25<br>
+        Universidad de Castilla-La Mancha<br>
+        <small>20 de septiembre de 2021</small>
+      </footer>
+    </div>
+  </article>
+
+  <script type="module" src="../js/main.mjs"></script>
+</body>
+</html>

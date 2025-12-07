@@ -1,0 +1,59 @@
+<header>
+    <h1>Tecnologías y Sistemas Web 24/25</h1>
+    <h2>Confirmar Compra</h2>
+  </header>
+  <article>
+    <nav class="navbar">
+      <ul>
+        <li><a href="cliente-home.html">Inicio</a></li>
+        <li><a href="cliente-carro.html">Carro</a></li>
+        <li><a href="cliente-compras.html">Facturas</a></li>
+        <li><a href="cliente-perfil.html">Perfil</a></li>
+        <li><a href="home.html">Salir</a></li>
+      </ul>
+    </nav>
+    <div class="contenido">
+      <form id="formCompra" class="compra-form">
+        <label for="fechaInput">Fecha</label>
+        <input id="fechaInput" type="date" readonly><br>
+  
+        <label for="razonSocialInput">Razón Social</label>
+        <input id="razonSocialInput" type="text" required><br>
+  
+        <label for="dniInput">DNI</label>
+        <input id="dniInput" type="text" readonly><br>
+  
+        <label for="direccionInput">Dirección</label>
+        <textarea id="direccionInput" rows="3" required></textarea><br>
+  
+        <label for="emailInput">Email</label>
+        <input id="emailInput" type="email" readonly><br>
+  
+        <table id="detalleCompra" class="detalle-compra">
+          <thead>
+            <tr>
+              <th>Cant.</th>
+              <th>Detalle</th>
+              <th>Unidad</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Detalle de los libros en el carrito se llenará dinámicamente -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3">IVA €</td>
+              <td id="ivaTotal"></td>
+            </tr>
+            <tr>
+              <td colspan="3">Total €</td>
+              <td id="totalCompra"></td>
+            </tr>
+          </tfoot>
+        </table>
+        <button type="button" id="pagarButton">Pagar</button>
+      </form>
+    </div>
+  </article>
+  

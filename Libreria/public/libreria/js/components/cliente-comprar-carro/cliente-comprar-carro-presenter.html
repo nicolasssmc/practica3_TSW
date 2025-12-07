@@ -1,0 +1,80 @@
+<header>
+  <h1>Tecnologías y Sistemas Web 24/25</h1>
+  <h2>Cliente Comprar Carro</h2>
+</header>
+
+<article>
+  <nav class="navbar">
+    <ul>
+      <li><a href="cliente-home.html">Inicio</a></li>
+      <li><a href="cliente-carro.html">Carro</a></li>
+      <li><a href="cliente-compras.html">Facturas</a></li>
+      <li><a href="cliente-perfil.html">Perfil</a></li>
+      <li><a href="home.html">Salir</a></li>
+    </ul>
+  </nav>
+
+  <div class="contenido">
+    <div class="info">
+      <div class="mensajes-container" id="mensajesContainer"></div>
+
+      <!-- FORMULARIO UNIFICADO CON TODO DENTRO -->
+      <form id="comprarForm">
+        <div class="factura-field">
+          <label for="fechaInput">Fecha</label>
+          <input id="fechaInput" type="date" required />
+          <label for="dniInput" style="margin-left: 1em;">DNI</label>
+          <input id="dniInput" type="text" required />
+        </div>
+
+        <div class="factura-field" style="display: flex; flex-direction: column; margin-top: 1em;">
+          <label for="razonSocialInput">Razon Social</label>
+          <input id="razonSocialInput" name="razonSocial" type="text" style="width: 100%;" value = "Razon Social">
+        </div>
+
+        <div class="factura-field" style="display: flex; flex-direction: column; margin-top: 1em;">
+          <label for="direccionInput">Dirección</label>
+          <textarea id="direccionInput" rows="3" style="width: 100%;" required></textarea>
+        </div>
+
+        <div class="factura-field" style="display: flex; flex-direction: column; margin-top: 1em;">
+          <label for="emailInput">Email</label>
+          <input id="emailInput" type="email" style="width: 100%;" required />
+        </div>
+
+        <!-- TABLA DEL CARRO -->
+        <div class="carro" style="margin-top: 2em;">
+          <table class="carro" style="height: 100px;">
+            <thead>
+              <tr>
+                <th style="width: 10%;">Cant.</th>
+                <th style="width: 60%;">Detalle</th>
+                <th style="width: 15%;">Unidad</th>
+                <th style="width: 15%;">Total</th>
+              </tr>
+            </thead>
+            <tbody id="carroBody">
+            </tbody>
+          </table>
+        </div>
+
+        <div class="totales">
+          <p class="p1"><strong>IVA €</strong> <span id="ivaTotal">0.00</span></p>
+          <p class="p2"><strong>Total €</strong> <span id="totalFinal">0.00</span></p>
+        </div>
+
+        <div class="botonera">
+          <input type="submit" class="boton" id="pagarInput" value="Pagar">
+        </div>
+      </form>
+    </div> <!-- <-- Faltaba esta línea para cerrar .info -->
+
+    <!-- FOOTER FINAL -->
+    <footer>
+      Prof. Dr. Ricardo Tesoriero Pszytula<br>
+      Tecnologías y Sistemas Web 24/25<br>
+      Universidad de Castilla-La Mancha<br>
+      <small>20 de septiembre de 2021</small>
+    </footer>
+  </div>
+</article>

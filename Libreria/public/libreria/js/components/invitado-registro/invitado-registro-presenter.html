@@ -1,0 +1,59 @@
+<header>
+  <h1>Tecnologías y Sistemas Web 24/25</h1>
+  <h2>Registro en el sistema</h2>
+</header>
+<article>
+  <nav class="navbar">
+    <ul>
+      <li><a id="homeLink" href="index.html">Inicio</a></li>
+      <li><a id="ingresoLink" href="invitado-ingreso.html">Ingreso</a></li>
+      <li><a id="registroLink" href="invitado-registro.html">Registro</a></li>
+    </ul>
+  </nav>
+  <div class="contenido">
+    <!-- <nav class="toolbar">
+      <ul>
+        <li><a id="homeLink" href="index.html">Inicio</a></li>
+        <li><a id="ingresoLink" href="ingreso.html">Ingreso</a></li>
+        <li><a id="registroLink" href="registro.html">Registro</a></li>
+      </ul>
+    </nav> -->
+    <div class="info">
+      <div id="mensajesContainer" class="mensajes-container"></div>
+      <form class="ingreso" id="usuarioForm" name="usuario">
+        <label for="dniInput">DNI</label>
+        <input id="dniInput" name="dni" type="text" placeholder="Ingrese su DNI" value="00000000C" required><br>
+
+        <label for="nombreInput">Nombre</label>
+        <input id="nombreInput" name="nombre" type="text" placeholder="Ingrese su nombre" value="Nombre" required><br>
+
+        <label for="apellidosInput">Apellidos</label>
+        <input id="apellidosInput" name="apellidos" type="text" placeholder="Ingrese sus apellidos" value="Apellidos" required><br>
+
+        <label for="direccionInput">Dirección</label>
+        <textarea id="direccionInput" name="direccion" type="text" placeholder="Ingrese su dirección" required rows="3">Escuela Superior de Ingeniería Informática. Universidad de Castilla-La Mancha. C/Paseo de los estudiantes S/N, (02071) Albacete, España.</textarea><br>
+
+        <label for="emailInput">Email</label>
+        <input id="emailInput" name="email" type="email" placeholder="Ingrese su correo electrónico" value="00000000C@tsw.uclm.es" required><br>
+
+        <label for="passwordInput">Contraseña</label>
+        <input id="passwordInput" name="password" type="password" placeholder="Ingrese la contraseña" value="00000000C" required><br>
+
+        <label for="rolSelect">Rol</label>
+        <select id="rolSelect" name="rol" required>
+          <option value="CLIENTE" selected>CLIENTE</option>
+          <option value="ADMIN">ADMIN</option>
+        </select><br>
+        <footer>
+          <input id="registroInput" name="registro" type="submit" value="Registro">
+        </footer>
+      </form>
+    </div>
+    <footer>
+      Prof. Dr. Ricardo Tesoriero Pszytula<br>
+      Tecnologías y Sistemas Web 24/25<br>
+      Universidad de Castilla-La Mancha<br>
+      <small>20 de septiembre de 2021</small>
+    </footer>
+  </div>
+</article>
