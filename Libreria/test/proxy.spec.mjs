@@ -8,7 +8,7 @@ const assert = chai.assert;
 const ISBN_TEST = "978-PROXY-TEST";
 const CLIENTE_TEST = { 
     dni: "9999P", nombre: "Proxy", apellidos: "Tester", 
-    email: "proxy@test.com", password: "123", rol: "CLIENTE" 
+    email: "proxy@test.com", password: "1234", rol: "CLIENTE" 
 };
 
 // Helper para crear libros
@@ -69,7 +69,7 @@ describe("Rúbrica: PRUEBAS Proxy (Cliente)", function () {
             // registrar
             let creado;
             try {
-                creado = await proxy.registrar({ dni: 'GS1', nombre: 'GSUser', apellidos: 'Test', email, password: 'p', rol: 'CLIENTE' });
+                creado = await proxy.registrar({ dni: 'GS1', nombre: 'GSUser', apellidos: 'Test', email, password: 'pass', rol: 'CLIENTE' });
             } catch (e) {
                 const resp = await fetch(`/api/clientes?email=${encodeURIComponent(email)}`);
                 const users = await resp.json();
@@ -262,7 +262,7 @@ describe("Rúbrica: PRUEBAS Proxy (Cliente)", function () {
         let clienteModId;
 
         it("registrar() - Debería crear un cliente para modificar", async () => {
-            const nuevo = { dni: "MOD1", nombre: "ModTest", apellidos: "Cliente", email: "mod@test.com", password: "123", rol: "CLIENTE" };
+            const nuevo = { dni: "MOD1", nombre: "ModTest", apellidos: "Cliente", email: "mod@test.com", password: "1234", rol: "CLIENTE" };
             try {
                 const res = await proxy.registrar(nuevo);
                 clienteModId = res._id;
@@ -290,7 +290,7 @@ describe("Rúbrica: PRUEBAS Proxy (Cliente)", function () {
         const regEmail = 'reg@test.com';
 
         it("registrar() - Debería registrar un cliente nuevo (o recuperar si ya existe)", async () => {
-            const nuevo = { dni: 'REG1', nombre: 'RegTest', apellidos: 'User', email: regEmail, password: '123', rol: 'CLIENTE' };
+            const nuevo = { dni: 'REG1', nombre: 'RegTest', apellidos: 'User', email: regEmail, password: '1234', rol: 'CLIENTE' };
             try {
                 const res = await proxy.registrar(nuevo);
                 regClienteId = res._id;
@@ -304,7 +304,7 @@ describe("Rúbrica: PRUEBAS Proxy (Cliente)", function () {
         });
 
         it("autenticar() - Debería autenticar con credenciales correctas", async () => {
-            const res = await proxy.autenticar({ email: regEmail, password: '123', rol: 'CLIENTE' });
+            const res = await proxy.autenticar({ email: regEmail, password: '1234', rol: 'CLIENTE' });
             assert.isObject(res);
         });
 
@@ -326,7 +326,7 @@ describe("Rúbrica: PRUEBAS Proxy (Cliente)", function () {
         const email = 'crud@test.com';
 
         it("registrar() - Crear usuario cliente", async () => {
-            const nuevo = { dni: 'CRUD1', nombre: 'Crud', apellidos: 'User', email, password: 'pwd', rol: 'CLIENTE' };
+            const nuevo = { dni: 'CRUD1', nombre: 'Crud', apellidos: 'User', email, password: 'password', rol: 'CLIENTE' };
             try {
                 const res = await proxy.registrar(nuevo);
                 userId = res._id;
@@ -383,7 +383,7 @@ describe("Rúbrica: PRUEBAS Proxy (Cliente)", function () {
         before(async () => {
             // Crear cliente para pruebas de excepciones
             try {
-                const res = await proxy.registrar({ dni: 'EX1', nombre: 'Ex', apellidos: 'Carro', email: 'excarro@test.com', password: '123', rol: 'CLIENTE' });
+                const res = await proxy.registrar({ dni: 'EX1', nombre: 'Ex', apellidos: 'Carro', email: 'excarro@test.com', password: '1234', rol: 'CLIENTE' });
                 clienteExId = res._id;
             } catch (e) {
                 const resp = await fetch('/api/clientes?email=excarro@test.com');

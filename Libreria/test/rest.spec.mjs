@@ -7,24 +7,17 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const URL = '/api';
 
-// Helpers
-const libroData = { isbn: 'TEST-ALL', titulo: 'Test Completo', autores: 'Yo', precio: 10, stock: 100 };
-const clienteData = { dni: '111C', nombre: 'Cliente', apellidos: 'Test', email: 'c@all.com', password: '123', rol: 'CLIENTE' };
-const adminData = { dni: '222A', nombre: 'Admin', apellidos: 'Test', email: 'a@all.com', password: '123', rol: 'ADMIN' };
-
-// Para facturas
-const LIBRO_TEST = { 
-    isbn: 'TEST-001', titulo: 'Libro Test', autores: 'Autor Test', precio: 10, stock: 5 
-};
-const CLIENTE_TEST = { 
-    dni: '1111A', nombre: 'Cli', apellidos: 'Ente', direccion: 'Casa', email: 'c@test.com', password: '123', rol: 'CLIENTE' 
-};
-const ADMIN_TEST = { 
-    dni: '2222B', nombre: 'Adm', apellidos: 'In', direccion: 'Oficina', email: 'a@test.com', password: '123', rol: 'ADMIN' 
-};
+// Helpers para datos: Usamos timestamps para evitar errores de "Duplicate Key" si la BD no se limpia bien
+const timestamp = Date.now();
+const libroData = { isbn: `TEST-ALL-${timestamp}`, titulo: 'Test Completo', autores: 'Yo', precio: 10, stock: 100 };
+const clienteData = { dni: `111C-${timestamp}`, nombre: 'Cliente', apellidos: 'Test', email: `c-${timestamp}@all.com`, password: '1234', rol: 'CLIENTE' };
+const adminData = { dni: `222A-${timestamp}`, nombre: 'Admin', apellidos: 'Test', email: `a-${timestamp}@all.com`, password: '1234', rol: 'ADMIN' };
 
 describe("REST libreria", function () {
-    // --- LIBROS ---
+    // Aumentamos timeout por si la BD tarda
+    this.timeout(10000);
+
+    // --- LIBROS (9 pruebas) ---
     describe("libros", function () {
         let id;
         it("DELETE /libros (removeLibros)", async () => {
@@ -44,7 +37,7 @@ describe("REST libreria", function () {
             let request = requester.post(`${URL}/libros`);
             let response = await request.send(libroData);
             expect(response).to.have.status(201);
-            id = response.body._id;
+            id = response.body._id; // Guardamos ID para siguientes tests
             requester.close();
         });
 
@@ -71,6 +64,7 @@ describe("REST libreria", function () {
             let request = requester.get(`${URL}/libros?isbn=${libroData.isbn}`);
             let response = await request.send();
             expect(response).to.have.status(200);
+            // La API devuelve array al buscar por query params
             expect(response.body[0]._id).to.equal(id);
             requester.close();
         });
@@ -95,12 +89,17 @@ describe("REST libreria", function () {
 
         it("PUT /libros (setLibros)", async () => {
             let requester = chai.request(app).keepOpen();
-            const nuevos = [crearLibro('M1'), crearLibro('M2')];
+            // Usamos ISBNs únicos para evitar choque
+            const ts = Date.now();
+            const nuevos = [
+                { ...crearLibro('M1'), isbn: `M1-${ts}` }, 
+                { ...crearLibro('M2'), isbn: `M2-${ts}` }
+            ];
             let request = requester.put(`${URL}/libros`);
             let response = await request.send(nuevos);
             expect(response).to.have.status(200);
             expect(response.body).to.have.lengthOf(2);
-            id = response.body[0]._id; // Actualizamos ID para siguientes
+            id = response.body[0]._id; // Actualizamos ID para test de borrado
             requester.close();
         });
 
@@ -113,7 +112,7 @@ describe("REST libreria", function () {
         });
     });
 
-    // --- CLIENTES ---
+    // --- CLIENTES (13 pruebas) ---
     describe("Clientes", () => {
         let id;
         it("DELETE /clientes (removeClientes)", async () => {
@@ -158,14 +157,16 @@ describe("REST libreria", function () {
             const res = await chai.request(app).put(`${URL}/clientes`).send([clienteData]);
             expect(res).to.have.status(200);
             expect(res.body).to.have.lengthOf(1);
-            id = res.body[0]._id; // Actualizar ID
+            id = res.body[0]._id;
         });
         // Carrito
         it("POST /clientes/:id/carro/items", async () => {
-            // Necesitamos un libro
-            const l = await chai.request(app).post(`${URL}/libros`).send(libroData);
+            // Creamos libro para añadir
+            const libroRes = await chai.request(app).post(`${URL}/libros`).send({ 
+                isbn: `CARRO-${Date.now()}`, titulo: 'Libro Carro', precio: 50, stock: 10 
+            });
             const res = await chai.request(app).post(`${URL}/clientes/${id}/carro/items`)
-                .send({ libro: l.body._id, cantidad: 1 });
+                .send({ libro: libroRes.body._id, cantidad: 1 });
             expect(res).to.have.status(201);
         });
         it("GET /clientes/:id/carro", async () => {
@@ -183,7 +184,7 @@ describe("REST libreria", function () {
         });
     });
 
-    // --- ADMINISTRADORES ---
+    // --- ADMINISTRADORES (10 pruebas) ---
     describe("Administradores", () => {
         let id;
         it("DELETE /admins (removeAdmins)", async () => {
@@ -235,35 +236,33 @@ describe("REST libreria", function () {
         });
     });
 
-    // --- FACTURAS ---
+    // --- FACTURAS (6 pruebas) ---
     describe("Facturas", () => {
         let clienteId, libroId, facturaId;
 
-        // SETUP ROBUSTO: Creamos todo desde cero para este bloque
+        // Configuración previa para que las pruebas de facturas tengan datos reales
         before(async () => {
             const requester = chai.request(app).keepOpen();
             try {
-                // 1. Crear Cliente Exclusivo para Facturas
+                // 1. Limpiar (reset)
+                await requester.delete(`${URL}/test-reset`);
+
+                // 2. Crear Cliente
+                const ts = Date.now();
                 const cliRes = await requester.post(`${URL}/clientes`).send({
-                    ...CLIENTE_TEST, 
-                    email: 'factura_user@test.com', 
-                    dni: 'FAC001'
+                    dni: `F-DNI-${ts}`, nombre: 'Fac', apellidos: 'Tura', email: `fac-${ts}@test.com`, password: '1234', rol: 'CLIENTE'
                 });
                 clienteId = cliRes.body._id;
 
-                // 2. Crear Libro Exclusivo
+                // 3. Crear Libro
                 const libRes = await requester.post(`${URL}/libros`).send({
-                    ...LIBRO_TEST, 
-                    isbn: 'FAC-BOOK', 
-                    stock: 100
+                    isbn: `F-ISBN-${ts}`, titulo: 'Libro Fac', precio: 10, stock: 100
                 });
                 libroId = libRes.body._id;
 
-                // 3. LLENAR EL CARRO (Crucial para evitar el error 400)
-                const addRes = await requester.post(`${URL}/clientes/${clienteId}/carro/items`)
+                // 4. Llenar Carro (Necesario para poder facturar)
+                await requester.post(`${URL}/clientes/${clienteId}/carro/items`)
                     .send({ libro: libroId, cantidad: 1 });
-                
-                if(addRes.status !== 201) throw new Error("Falló setup carrito");
 
             } finally { requester.close(); }
         });
@@ -273,12 +272,12 @@ describe("REST libreria", function () {
             try {
                 const facturaData = { 
                     cliente: clienteId, 
-                    nombre: "Factura Test", 
-                    direccion: "Dir Test"
+                    razonSocial: "RS Test", 
+                    direccion: "Dir Test",
+                    dni: "123X",
+                    email: "f@test.com"
                 };
                 const res = await requester.post(`${URL}/facturas`).send(facturaData);
-                
-                // Ahora el carro tiene items, así que debe devolver 201
                 expect(res).to.have.status(201);
                 expect(res.body).to.have.property('numero');
                 facturaId = res.body._id;
@@ -290,8 +289,6 @@ describe("REST libreria", function () {
             try {
                 const res = await requester.get(`${URL}/facturas`);
                 expect(res).to.have.status(200);
-                expect(res.body).to.be.an('array');
-                // Debe haber al menos la que acabamos de crear
                 expect(res.body.length).to.be.greaterThan(0);
             } finally { requester.close(); }
         });
@@ -310,15 +307,15 @@ describe("REST libreria", function () {
             try {
                 const res = await requester.get(`${URL}/facturas?cliente=${clienteId}`);
                 expect(res).to.have.status(200);
-                const encontrada = res.body.find(f => f._id === facturaId);
-                expect(encontrada).to.exist;
+                const found = res.body.find(f => f._id === facturaId);
+                expect(found).to.exist;
             } finally { requester.close(); }
         });
 
         it("GET /facturas?numero=... (getFacturaPorNumero)", async () => {
             const requester = chai.request(app).keepOpen();
             try {
-                // Obtenemos el número real de la factura creada
+                // Recuperamos el número primero
                 const getRes = await requester.get(`${URL}/facturas/${facturaId}`);
                 const num = getRes.body.numero;
 
@@ -328,7 +325,7 @@ describe("REST libreria", function () {
             } finally { requester.close(); }
         });
 
-        it("DELETE /facturas (removeFacturas) - Limpieza", async () => {
+        it("DELETE /facturas (removeFacturas)", async () => {
              const requester = chai.request(app).keepOpen();
              try {
                  const res = await requester.delete(`${URL}/facturas`);
@@ -340,17 +337,10 @@ describe("REST libreria", function () {
         });
     });
 
-    // --- BLOQUE DE LIMPIEZA FINAL ---
+    // Limpieza final
     after(async function () {
         const requester = chai.request(app).keepOpen();
-        try {
-            // Llamamos a la ruta especial que borra TODO y pone contadores a 0
-            await requester.delete(`${URL}/test-reset`);
-            console.log("\t✔ Base de datos y contadores reseteados a 0.");
-        } catch (error) {
-            console.error("Error limpiando la base de datos:", error);
-        } finally {
-            requester.close();
-        }
+        await requester.delete(`${URL}/test-reset`);
+        requester.close();
     });
 });

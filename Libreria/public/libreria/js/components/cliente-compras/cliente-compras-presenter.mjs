@@ -47,7 +47,7 @@ export class ClienteComprasPresenter extends Presenter {
       // CORRECCIÓN: Usamos un enlace <a> estándar para que el router lo pueda capturar
       row.innerHTML = `
         <td style="padding: 10px;">${factura.numero}</td>
-        <td style="padding: 10px;">${factura.fecha}</td>
+        <td style="padding: 10px;">${new Date(factura.fecha).toLocaleDateString()}</td>
         <td style="padding: 10px;">${Number(factura.total).toFixed(2)} €</td>
         <td style="padding: 10px;">
           <a class="boton" href="cliente-ver-compra.html?numero=${factura.numero}">Ver</a>
