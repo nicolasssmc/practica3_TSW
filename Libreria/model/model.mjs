@@ -331,7 +331,7 @@ export class Libreria {
   // --- FACTURAS ---
 
   async getFacturas() {
-    return await FacturaModel.find().populate('cliente');
+    return await FacturaModel.find().populate('cliente').populate('items.libro');
   }
 
   async getFacturaPorId(id) {
@@ -339,11 +339,11 @@ export class Libreria {
   }
 
   async getFacturasPorCliente(idCliente) {
-    return await FacturaModel.find({ cliente: idCliente }).populate('cliente');
+    return await FacturaModel.find({ cliente: idCliente }).populate('cliente').populate('items.libro');
   }
 
   async getFacturaPorNumero(num) {
-    return await FacturaModel.findOne({ numero: Number(num) }).populate('cliente');
+    return await FacturaModel.findOne({ numero: Number(num) }).populate('cliente').populate('items.libro');
   }
 
   async removeFacturas() {
