@@ -1,6 +1,6 @@
 import { model, ROL, connectDB, LibroModel, ClienteModel, AdminModel, FacturaModel } from './model.mjs';
 
-// Funciones auxiliares de creación de datos (Mantén las tuyas, solo asegúrate de que devuelvan objetos JS planos)
+// Funciones auxiliares de creación de datos
 export function crearLibro(isbn) {
   return {
     isbn: `${isbn}`,

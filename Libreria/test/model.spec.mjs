@@ -5,7 +5,6 @@ import {
   model as serverModel,
   connectDB,
 } from "../model/model.mjs";
-// import mongoose from "mongoose"; // No parece necesario explícitamente aquí si usas el wrapper
 
 const assert = chai.assert;
 
